@@ -5,6 +5,9 @@ const annotateAsPure = require("@babel/helper-annotate-as-pure").default;
 
 const { getCSS, processCSS, toHash } = require("./common");
 
+// @ts-ignore
+const pkgName = require("../package.json").name;
+
 module.exports = cssMacro;
 
 /**
@@ -19,7 +22,7 @@ function cssMacro({ references, babel, state }) {
 
   const CSSRefs = references.css;
   if (CSSRefs) {
-    const cssFn = addNamed(program, "css", "./lib");
+    const cssFn = addNamed(program, "css", pkgName + "/runtime/css");
 
     CSSRefs.forEach(ref => {
       let CSS = getCSS(t, ref.parent);

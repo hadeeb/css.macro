@@ -6,6 +6,9 @@ const annotateAsPure = require("@babel/helper-annotate-as-pure").default;
 
 const { getCSS, processCSS, toHash } = require("./common");
 
+// @ts-ignore
+const pkgName = require("../package.json").name;
+
 module.exports = styledMacro;
 
 /**
@@ -20,7 +23,7 @@ function styledMacro({ references, babel, state }) {
 
   const StyledRefs = references.styled;
   if (StyledRefs) {
-    const styledFn = addNamed(program, "styled", "./lib");
+    const styledFn = addNamed(program, "styled", pkgName + "/runtime/styled");
 
     StyledRefs.forEach(ref => {
       /**

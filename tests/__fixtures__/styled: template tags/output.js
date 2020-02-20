@@ -1,4 +1,4 @@
-import { styled as _styled } from "./lib";
+import { styled as _styled } from "@hadeeb/css.macro/runtime/styled";
 
 let StyledA =
 /*#__PURE__*/

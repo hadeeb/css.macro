@@ -6,15 +6,17 @@ import {
   CSSProperties
 } from "react";
 
-interface NestedCSSProperties extends CSSProperties {
-  [x: string]: CSSProperties | NestedCSSProperties;
-}
+type Nested<T> = Record<string, T>;
+
+//@ts-ignore
+interface NestedCSSProperties
+  extends CSSProperties,
+    Nested<NestedCSSProperties> {}
 
 type CSSReturn = string & { readonly __opaque__: "CSSReturn" };
 declare function css(
-  styleObject: CSSProperties | NestedCSSProperties
+  styleObject: TemplateStringsArray | CSSProperties | NestedCSSProperties
 ): CSSReturn;
-declare function css(cssString: TemplateStringsArray): CSSReturn;
 
 type createStyled<T> = (
   cssString: TemplateStringsArray | CSSProperties | NestedCSSProperties
@@ -31,7 +33,7 @@ type styledTags = {
   [x in keyof JSX.IntrinsicElements]: createStyled<JSX.IntrinsicElements[x]>;
 };
 
-interface styledObject extends styledFunction, styledTags { }
+interface styledObject extends styledFunction, styledTags {}
 
 declare const styled: styledObject;
 
