@@ -5,6 +5,11 @@
   "repository": "https://github.com/hadeeb/css.macro.git",
   "author": "Hadeeb Farhan <hadeebfarhan1@gmail.com>",
   "license": "MIT",
+  "files": [
+    "src",
+    "runtime",
+    "server.js"
+  ],
   "scripts": {
     "test": "jest"
   },
@@ -30,6 +35,9 @@
     "jest": "^25.1.0",
     "react": "^16.12.0",
     "react-test-renderer": "^16.12.0"
+  },
+  "browser": {
+    "./runtime/sheet.js": "./runtime/sheet.browser.js"
   },
   "jest": {
     "testEnvironment": "node"
