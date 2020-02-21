@@ -1,21 +1,18 @@
-const SHEET_ID = require("./id");
+var SHEET_ID = "_css";
 
-let sheetElement = document.querySelector("#" + SHEET_ID);
+var sheetElement = document.querySelector("#" + SHEET_ID);
 if (!sheetElement) {
   sheetElement = document.head.appendChild(document.createElement("style"));
   sheetElement.innerHTML = " ";
   sheetElement.id = SHEET_ID;
 }
-
-const sheet = {
-  /**
-   * @type {CharacterData}
-   */
-  sheet: sheetElement.firstChild
-};
+/**
+ * @type {CharacterData}
+ */
+var sheet = sheetElement.firstChild;
 
 function getSheet() {
   return sheet;
 }
 
-module.exports.getSheet = getSheet;
+module.exports = getSheet;

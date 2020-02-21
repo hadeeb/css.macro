@@ -1,6 +1,6 @@
-const SHEET_ID = require("./id");
+var SHEET_ID = "_css";
 
-const isServer = typeof window === "undefined";
+var isServer = typeof window === "undefined";
 
 /**
  * https://github.com/cristianbote/goober/blob/ffd974336cb3dd3322612e095e316aa85cafe42f/src/core/get-sheet.js
@@ -15,7 +15,7 @@ function getSheetElement() {
       }
     };
   }
-  let sheet = document.querySelector("#" + SHEET_ID);
+  var sheet = document.querySelector("#" + SHEET_ID);
   if (!sheet) {
     // Note to self: head.innerHTML +=, triggers a layout/reflow. Avoid it.
     sheet = document.head.appendChild(document.createElement("style"));
@@ -25,20 +25,21 @@ function getSheetElement() {
   return sheet.firstChild;
 }
 
-const getSheet = (function() {
+var getSheet = (function() {
   /**
    * @type {CharacterData}
    */
-  let sheet;
+  var sheet;
   function reset() {
     sheet = null;
   }
   return function() {
     if (!sheet) {
       sheet = getSheetElement();
+      sheet.reset = reset;
     }
-    return { sheet, reset };
+    return sheet;
   };
 })();
 
-module.exports.getSheet = getSheet;
+module.exports = getSheet;

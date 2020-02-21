@@ -1,15 +1,15 @@
 const { createElement } = require("react");
 const TestRenderer = require("react-test-renderer");
 
-const { css } = require("../runtime/css");
-const { styled } = require("../runtime/styled");
+const css = require("../runtime/css");
+const styled = require("../runtime/styled");
 const { extractCSS, styleID } = require("../server");
-const { getSheet } = require("../runtime/sheet");
+const getSheet = require("../runtime/sheet");
 
 describe("CSS", () => {
   afterEach(() => {
-    const { reset } = getSheet();
-    reset();
+    const sheet = getSheet();
+    sheet.reset();
   });
 
   it("returns className", () => {
@@ -18,19 +18,19 @@ describe("CSS", () => {
   });
 
   it("adds CSS rules to sheet", () => {
-    const { sheet } = getSheet();
+    const sheet = getSheet();
     const CSSRule = "css Rule string";
     css("rule", CSSRule);
     expect(sheet.data).toContain(CSSRule);
   });
 
   it("add a rule only once", () => {
-    const { sheet } = getSheet();
+    const sheet = getSheet();
     const CSSRule = ".className{rule}";
     css("className", CSSRule);
 
     const sheetLength = sheet.data.length;
-    css("rule", CSSRule);
+    css("className", CSSRule);
 
     expect(sheet.data.length).toEqual(sheetLength);
   });
@@ -78,8 +78,8 @@ describe("Styled", () => {
 
 describe("extractCSS", () => {
   afterEach(() => {
-    const { reset } = getSheet();
-    reset();
+    const sheet = getSheet();
+    sheet.reset();
   });
 
   it("returns all CSS rules", () => {
@@ -99,7 +99,7 @@ describe("extractCSS", () => {
     css(rule2, rule2);
     extractCSS();
 
-    const { sheet } = getSheet();
+    const sheet = getSheet();
     expect(sheet.data).not.toContain(rule1);
     expect(sheet.data).not.toContain(rule2);
   });

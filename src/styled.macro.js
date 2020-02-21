@@ -1,6 +1,6 @@
 //@ts-check
 const { MacroError } = require("babel-plugin-macros");
-const { addNamed } = require("@babel/helper-module-imports");
+const { addNamespace } = require("@babel/helper-module-imports");
 
 const annotateAsPure = require("@babel/helper-annotate-as-pure").default;
 
@@ -23,7 +23,9 @@ function styledMacro({ references, babel, state }) {
 
   const StyledRefs = references.styled;
   if (StyledRefs) {
-    const styledFn = addNamed(program, "styled", pkgName + "/runtime/styled");
+    const styledFn = addNamespace(program, pkgName + "/runtime/styled", {
+      nameHint: "styled"
+    });
 
     StyledRefs.forEach(ref => {
       /**
@@ -57,7 +59,7 @@ function styledMacro({ references, babel, state }) {
 
       let CSS = getCSS(t, parent);
       const className = toHash(CSS);
-      CSS = processCSS(CSS, className);
+      CSS = processCSS("." + className + "{" + CSS + "}");
 
       const replacement = t.callExpression(Caller, [
         t.stringLiteral(className),

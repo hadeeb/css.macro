@@ -111,10 +111,9 @@ const CssProcessor = postCSS([postcssNested(), autoprefixer(), csso()]);
 
 /**
  * @param {string} CssString
- * @param {string} className
  */
-function processCSS(CssString, className) {
-  return CssProcessor.process("." + className + "{" + CssString + "}").css;
+function processCSS(CssString) {
+  return CssProcessor.process(CssString).css;
 }
 
 module.exports = {

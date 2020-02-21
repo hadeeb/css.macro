@@ -1,5 +1,5 @@
 //@ts-check
-const { addNamed } = require("@babel/helper-module-imports");
+const { addNamespace } = require("@babel/helper-module-imports");
 
 const annotateAsPure = require("@babel/helper-annotate-as-pure").default;
 
@@ -22,18 +22,21 @@ function cssMacro({ references, babel, state }) {
 
   const CSSRefs = references.css;
   if (CSSRefs) {
-    const cssFn = addNamed(program, "css", pkgName + "/runtime/css");
+    const cssFn = addNamespace(program, pkgName + "/runtime/css", {
+      nameHint: "css"
+    });
 
     CSSRefs.forEach(ref => {
       let CSS = getCSS(t, ref.parent);
 
       const className = toHash(CSS);
-      CSS = processCSS(CSS, className);
+      CSS = processCSS("." + className + "{" + CSS + "}");
 
       const replacement = t.callExpression(t.identifier(cssFn.name), [
         t.stringLiteral(className),
         t.stringLiteral(CSS)
       ]);
+
       annotateAsPure(replacement);
       ref.parentPath.replaceWith(replacement);
     });

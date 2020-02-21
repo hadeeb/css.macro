@@ -1,4 +1,4 @@
-import { css as _css } from "@hadeeb/css.macro/runtime/css";
+import * as _css from "@hadeeb/css.macro/runtime/css";
 
 let class1 =
 /*#__PURE__*/

@@ -1,26 +1,30 @@
-const css = require("./css").css;
-const createElement = require("react").createElement;
+var css = require("./css");
+var react = require("react");
 
-function styled(comp) {
+function styled(Component) {
   return function(className, rule) {
     if (process.env.NODE_ENV !== "production") {
-      const FnName =
-        typeof comp === "string" ? comp : comp.displayName || comp.name;
-      Styled.displayName = `Styled${FnName}`;
+      var FnName =
+        typeof Component === "string"
+          ? Component
+          : Component.displayName || Component.name;
+      Styled.displayName = "Styled(" + FnName + ")";
     }
 
     css(className, rule);
 
     function Styled(props) {
-      return createElement(comp, {
-        ...props,
-        className: props.className
-          ? props.className + " " + className
-          : className
-      });
+      return react.createElement(
+        Component,
+        Object.assign({}, props, {
+          className: props.className
+            ? props.className + " " + className
+            : className
+        })
+      );
     }
     return Styled;
   };
 }
 
-module.exports.styled = styled;
+module.exports = styled;

@@ -1,11 +1,11 @@
-const getSheet = require("./sheet").getSheet;
+var getSheet = require("./sheet");
 
 function extractCSS() {
-  const { sheet, reset } = getSheet();
-  const css = sheet.data;
-  reset();
+  var sheet = getSheet();
+  var css = sheet.data;
+  sheet.reset();
   return css;
 }
 
 module.exports.extractCSS = extractCSS;
-module.exports.styleID = require("./id");
+module.exports.styleID = "_css";
