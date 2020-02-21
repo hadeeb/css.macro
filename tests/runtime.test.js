@@ -12,25 +12,20 @@ describe("CSS", () => {
     sheet.reset();
   });
 
-  it("returns className", () => {
-    const className = "QWERTY";
-    expect(css(className, "")).toEqual(className);
-  });
-
-  it("adds CSS rules to sheet", () => {
+  it("add CSS rules to sheet", () => {
     const sheet = getSheet();
     const CSSRule = "css Rule string";
-    css("rule", CSSRule);
+    css(CSSRule);
     expect(sheet.data).toContain(CSSRule);
   });
 
   it("add a rule only once", () => {
     const sheet = getSheet();
     const CSSRule = ".className{rule}";
-    css("className", CSSRule);
+    css(CSSRule);
 
     const sheetLength = sheet.data.length;
-    css("className", CSSRule);
+    css(CSSRule);
 
     expect(sheet.data.length).toEqual(sheetLength);
   });
@@ -85,8 +80,8 @@ describe("extractCSS", () => {
   it("returns all CSS rules", () => {
     const rule1 = "rule1";
     const rule2 = "rule2";
-    css(rule1, rule1);
-    css(rule2, rule2);
+    css(rule1);
+    css(rule2);
     const styles = extractCSS();
     expect(styles).toContain(rule1);
     expect(styles).toContain(rule2);
@@ -95,8 +90,8 @@ describe("extractCSS", () => {
   it("resets style cache", () => {
     const rule1 = "rule1";
     const rule2 = "rule2";
-    css(rule1, rule1);
-    css(rule2, rule2);
+    css(rule1);
+    css(rule2);
     extractCSS();
 
     const sheet = getSheet();

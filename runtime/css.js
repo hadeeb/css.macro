@@ -1,14 +1,12 @@
 var getSheet = require("./sheet");
 /**
- * @param {string} className
  * @param {string} rule
  */
-function css(className, rule) {
+function css(rule) {
   const sheet = getSheet();
-  if (sheet.data.indexOf(className) < 0) {
+  if (sheet.data.indexOf(rule) < 0) {
     sheet.appendData(rule);
   }
-  return className;
 }
 
 module.exports = css;

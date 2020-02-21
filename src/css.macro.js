@@ -1,8 +1,6 @@
 //@ts-check
 const { addNamespace } = require("@babel/helper-module-imports");
 
-const annotateAsPure = require("@babel/helper-annotate-as-pure").default;
-
 const { getCSS, processCSS, toHash } = require("./common");
 
 // @ts-ignore
@@ -32,12 +30,11 @@ function cssMacro({ references, babel, state }) {
       const className = toHash(CSS);
       CSS = processCSS("." + className + "{" + CSS + "}");
 
-      const replacement = t.callExpression(t.identifier(cssFn.name), [
-        t.stringLiteral(className),
-        t.stringLiteral(CSS)
+      const replacement = t.sequenceExpression([
+        t.callExpression(t.identifier(cssFn.name), [t.stringLiteral(CSS)]),
+        t.stringLiteral(className)
       ]);
 
-      annotateAsPure(replacement);
       ref.parentPath.replaceWith(replacement);
     });
   }

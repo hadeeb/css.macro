@@ -11,7 +11,7 @@ function styled(Component) {
       Styled.displayName = "Styled(" + FnName + ")";
     }
 
-    css(className, rule);
+    css(rule);
 
     function Styled(props) {
       return react.createElement(
