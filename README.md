@@ -28,7 +28,7 @@ npm install @hadeeb/css.macro
 You'll also need to install and configure
 [`babel-plugin-macros`][babel-plugin-macros] if you haven't already.
 
-## Examples
+## Usage
 
 ### CSS
 
@@ -44,7 +44,7 @@ import { css } from "@hadeeb/css.macro";
 </button>;
 ```
 
-## Styled components
+### Styled components
 
 ```js
 import { styled } from "@hadeeb/css.macro";
