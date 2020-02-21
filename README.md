@@ -14,7 +14,7 @@ A tiny CSS in JS solution for simple use cases, built with [`babel-plugin-macros
 
 - Vendor prefixing with [`autoprefixer`][autoprefixer].
 - Nested styles with [`postcss-nested`][postcss-nested].
-- Author CSS in tagged templates or objects.
+- Write styles in tagged templates or objects.
 - Tiny runtime (`~200 Bytes`).
 
 ## Install
@@ -30,8 +30,10 @@ You'll also need to install and configure
 
 ## Examples
 
+### CSS
+
 ```js
-import { css, styled } from "@hadeeb/css.macro";
+import { css } from "@hadeeb/css.macro";
 
 <button
   className={css`
@@ -40,6 +42,12 @@ import { css, styled } from "@hadeeb/css.macro";
 >
   Content
 </button>;
+```
+
+## Styled components
+
+```js
+import { styled } from "@hadeeb/css.macro";
 
 const StyledDiv = styled.div`
   font-weight: 500;
@@ -47,20 +55,16 @@ const StyledDiv = styled.div`
     font-size: 12px;
   }
 `;
-
-// OR use style objects
-
-<span className={css({ fontSize: 14 })}>Content</span>;
-
-const StyledDiv = styled.div({
-  fontWeight: 500,
-  ".someClass": {
-    fontSize: 12
+// OR
+const StyledDiv = styled("div")`
+  font-weight: 500;
+  span {
+    font-size: 12px;
   }
-});
+`;
 ```
 
-`styled` can wrap any component which accepts a `className` prop
+`styled` can also wrap any component which accepts a `className` prop
 
 ```js
 import { styled } from "@hadeeb/css.macro";
@@ -72,6 +76,42 @@ const StyledLink = styled(Link)`
     color: red;
   }
 `;
+```
+
+### Global styles
+
+```js
+import { injectGlobal } from "@hadeeb/css.macro";
+injectGlobal`
+  body {
+    margin: 0;
+  }
+`;
+```
+
+### Style objects
+
+Styles can also be declared as objects
+
+> Note: objects should be declared inline.
+
+```js
+import { css, styled, injectGlobal } from "@hadeeb/css.macro";
+
+<span className={css({ fontSize: 14 })}>Content</span>;
+
+const StyledDiv = styled.div({
+  fontWeight: 500,
+  ".someClass": {
+    fontSize: 12
+  }
+});
+
+injectGlobal({
+  ".root": {
+    height: "100vh"
+  }
+});
 ```
 
 ## Server Side Rendering
@@ -87,7 +127,7 @@ const styleTag = `<style id="${styleID}">${extractCSS()}</style>`;
 ## Caveats
 
 - Dynamic styles are not supported
-- Style objects have to declared inline
+- Style objects have to be declared inline
 
 [babel]: https://babeljs.io/
 [babel-plugin-macros]: https://github.com/kentcdodds/babel-plugin-macros
