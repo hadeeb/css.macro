@@ -1,6 +1,6 @@
 {
   "name": "@hadeeb/css.macro",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A tiny CSS in JS solution for simple use cases",
   "main": "src/macro.js",
   "repository": "https://github.com/hadeeb/css.macro.git",
