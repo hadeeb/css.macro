@@ -3,6 +3,7 @@ const { createMacro } = require("babel-plugin-macros");
 
 const CSSMacro = require("./css.macro");
 const StyledMacro = require("./styled.macro");
+const globalCSSMacro = require("./global.macro");
 
 module.exports = createMacro(Macro);
 
@@ -12,4 +13,5 @@ module.exports = createMacro(Macro);
 function Macro(args) {
   CSSMacro(args);
   StyledMacro(args);
+  globalCSSMacro(args);
 }

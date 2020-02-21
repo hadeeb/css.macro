@@ -13,13 +13,13 @@ interface NestedCSSProperties
   extends CSSProperties,
     Nested<NestedCSSProperties> {}
 
+type CSSObject = CSSProperties | NestedCSSProperties;
+
 type CSSReturn = string & { readonly __opaque__: "CSSReturn" };
-declare function css(
-  styleObject: TemplateStringsArray | CSSProperties | NestedCSSProperties
-): CSSReturn;
+declare function css(styleObject: TemplateStringsArray | CSSObject): CSSReturn;
 
 type createStyled<T> = (
-  cssString: TemplateStringsArray | CSSProperties | NestedCSSProperties
+  cssString: TemplateStringsArray | CSSObject
 ) => FunctionComponent<T>;
 
 interface styledFunction {
@@ -37,4 +37,10 @@ interface styledObject extends styledFunction, styledTags {}
 
 declare const styled: styledObject;
 
-export { css, styled };
+type GlobalStyles = Record<string, CSSObject>;
+
+declare function injectGlobal(
+  styleObject: TemplateStringsArray | GlobalStyles
+): void;
+
+export { css, styled, injectGlobal };
