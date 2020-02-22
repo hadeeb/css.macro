@@ -33,8 +33,7 @@ function styledMacro({ references, babel, state }) {
        */
       let Caller;
       if (t.isMemberExpression(ref.parent)) {
-        const { parentPath, parent } = ref;
-        let elementName = parent.property.name;
+        let elementName = ref.parent.property.name;
 
         // Custom elements
         if (/[A-Z]/.test(elementName)) {
@@ -45,8 +44,12 @@ function styledMacro({ references, babel, state }) {
         Caller = t.callExpression(t.identifier(styledFn.name), [
           t.stringLiteral(elementName)
         ]);
-        parentPath.replaceWith(Caller);
       } else if (t.isCallExpression(ref.parent)) {
+        if (ref.parent.arguments.length !== 1) {
+          throw new MacroError(
+            "styled function should be called with exactly one argument"
+          );
+        }
         Caller = t.callExpression(
           t.identifier(styledFn.name),
           ref.parent.arguments
@@ -61,13 +64,10 @@ function styledMacro({ references, babel, state }) {
       const className = toHash(CSS);
       CSS = processCSS("." + className + "{" + CSS + "}");
 
-      const replacement = t.callExpression(Caller, [
-        t.stringLiteral(className),
-        t.stringLiteral(CSS)
-      ]);
-      annotateAsPure(replacement);
+      Caller.arguments.push(t.stringLiteral(className), t.stringLiteral(CSS));
+      annotateAsPure(Caller);
 
-      ref.parentPath.parentPath.replaceWith(replacement);
+      ref.parentPath.parentPath.replaceWith(Caller);
     });
   }
 }
