@@ -36,7 +36,7 @@ function AstToLiteral(t, arg) {
 
 /**
  * @param {typeof import("@babel/types")} t
- * @param {object} key
+ * @param {any} key
  */
 function getKey(t, key) {
   if (t.isIdentifier(key)) {
@@ -49,16 +49,15 @@ function getKey(t, key) {
 
 /**
  * @param {typeof import("@babel/types")} t
- * @param {object} key
+ * @param {import("@babel/types").Expression|import("@babel/types").PatternLike} value
  */
-function getValue(t, key) {
-  if (t.isStringLiteral(key) || t.isNumericLiteral(key)) {
-    return key.value;
-  } else if (t.isObjectExpression(key)) {
-    let a = AstToLiteral(t, key);
-    return a;
+function getValue(t, value) {
+  if (t.isStringLiteral(value) || t.isNumericLiteral(value)) {
+    return value.value;
+  } else if (t.isObjectExpression(value)) {
+    return AstToLiteral(t, value);
   } else {
-    throw new MacroError("Invalide type for value " + key.type);
+    throw new MacroError("Invalide type for value " + value.type);
   }
 }
 
