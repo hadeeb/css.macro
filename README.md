@@ -15,9 +15,18 @@ A tiny CSS in JS solution for simple use cases, built with [`babel-plugin-macros
 - Vendor prefixing with [`autoprefixer`][autoprefixer].
 - Nested styles with [`postcss-nested`][postcss-nested].
 - Write styles in tagged templates or objects.
-- Tiny runtime (`~200 Bytes`).
+- Zero runtime cost (your bundler should handle `.css` imports).
 
-## Install
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Classname](#classname)
+  - [Global Styles](#global-styles)
+  - [Style Objects](#style-objects)
+- [Caveats](#caveats)
+
+## Installation
 
 ```
 yarn add @hadeeb/css.macro
@@ -25,12 +34,14 @@ yarn add @hadeeb/css.macro
 npm install @hadeeb/css.macro
 ```
 
-You'll also need to install and configure
-[`babel-plugin-macros`][babel-plugin-macros] if you haven't already.
+> You'll also need to install and configure
+> [`babel-plugin-macros`][babel-plugin-macros] if you haven't already.
+>
+> If you are using [`create-react-app`][cra] or [`Gatsby`][gatsby], it's already configured for you.
 
 ## Usage
 
-### CSS
+### Classname
 
 ```js
 import { css } from "@hadeeb/css.macro";
@@ -42,40 +53,6 @@ import { css } from "@hadeeb/css.macro";
 >
   Content
 </button>;
-```
-
-### Styled components
-
-```js
-import { styled } from "@hadeeb/css.macro";
-
-const StyledDiv = styled.div`
-  font-weight: 500;
-  span {
-    font-size: 12px;
-  }
-`;
-// OR
-const StyledDiv = styled("div")`
-  font-weight: 500;
-  span {
-    font-size: 12px;
-  }
-`;
-```
-
-`styled` can also wrap any component which accepts a `className` prop
-
-```js
-import { styled } from "@hadeeb/css.macro";
-import { Link } from "react-router-dom";
-
-const StyledLink = styled(Link)`
-  color: blue;
-  &:hover {
-    color: red;
-  }
-`;
 ```
 
 ### Global styles
@@ -96,32 +73,15 @@ Styles can also be declared as objects
 > Note: objects should be declared inline.
 
 ```js
-import { css, styled, injectGlobal } from "@hadeeb/css.macro";
+import { css, injectGlobal } from "@hadeeb/css.macro";
 
 <span className={css({ fontSize: 14 })}>Content</span>;
-
-const StyledDiv = styled.div({
-  fontWeight: 500,
-  ".someClass": {
-    fontSize: 12
-  }
-});
 
 injectGlobal({
   ".root": {
     height: "100vh"
   }
 });
-```
-
-## Server Side Rendering
-
-After rendering the components extract the CSS and add it to the DOM
-
-```js
-import { extractCSS, styleID } from "@hadeeb/css.macro/server";
-
-const styleTag = `<style id="${styleID}">${extractCSS()}</style>`;
 ```
 
 ## Caveats
@@ -134,3 +94,5 @@ const styleTag = `<style id="${styleID}">${extractCSS()}</style>`;
 [postcss]: https://postcss.org/
 [autoprefixer]: https://github.com/postcss/autoprefixer
 [postcss-nested]: https://github.com/postcss/postcss-nested
+[cra]: https://create-react-app.dev/
+[gatsby]: https://www.gatsbyjs.org/
