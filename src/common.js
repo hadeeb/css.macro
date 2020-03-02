@@ -1,5 +1,7 @@
 //@ts-check
 const { MacroError } = require("babel-plugin-macros");
+const fs = require("fs");
+const path = require("path");
 
 const postCSS = require("postcss");
 const postCSSJS = require("postcss-js");
@@ -115,8 +117,18 @@ function processCSS(CssString) {
   return CssProcessor.process(CssString).css;
 }
 
+/**
+ * @param {string} filePath
+ * @param {String} fileName
+ * @param {string} CSS
+ */
+function writeCSS(filePath, fileName, CSS) {
+  fs.writeFileSync(path.join(filePath, fileName), CSS);
+}
+
 module.exports = {
   getCSS,
   processCSS,
-  toHash
+  toHash,
+  writeCSS
 };
