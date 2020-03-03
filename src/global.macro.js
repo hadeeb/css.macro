@@ -1,16 +1,16 @@
 //@ts-check
-const { addSideEffect } = require("@babel/helper-module-imports");
+const { addSideEffect, addNamespace } = require("@babel/helper-module-imports");
 const path = require("path");
 
 const { getCSS, processCSS, toHash, writeCSS } = require("./common");
 
-const { cssDir, importPath } = require("./vars");
+const { cssDir, importPath, pkgName } = require("./vars");
 
 module.exports = globalCSSMacro;
 
 /**
  * @param {import("babel-plugin-macros").MacroParams} param0
- * @param {{ emitCSS: boolean }} config
+ * @param {{ emitCSS: boolean,useRuntime:boolean }} config
  */
 function globalCSSMacro({ references, babel, state }, config) {
   const t = babel.types;
@@ -22,21 +22,36 @@ function globalCSSMacro({ references, babel, state }, config) {
   const globalRefs = references.injectGlobal;
 
   if (globalRefs) {
+    let cssFn;
+
+    if (config.useRuntime) {
+      cssFn = addNamespace(program, pkgName + "/runtime/css", {
+        nameHint: "css"
+      });
+    }
     globalRefs.forEach(ref => {
       let CSS = getCSS(t, ref.parent);
 
       CSS = processCSS(CSS);
 
-      const fileName = toHash(CSS) + ".css";
+      if (config.useRuntime) {
+        const replacement = t.callExpression(t.identifier(cssFn.name), [
+          t.stringLiteral(CSS)
+        ]);
 
-      if (config.emitCSS) {
-        // This flag is to disable writing to file during tests
-        writeCSS(cssDir, fileName, CSS);
+        ref.parentPath.replaceWith(replacement);
+      } else {
+        const fileName = toHash(CSS) + ".css";
+
+        if (config.emitCSS) {
+          // This flag is to disable writing to file during tests
+          writeCSS(cssDir, fileName, CSS);
+        }
+
+        addSideEffect(program, path.join(importPath, fileName));
+
+        ref.parentPath.remove();
       }
-
-      addSideEffect(program, path.join(importPath, fileName));
-
-      ref.parentPath.remove();
     });
   }
 }

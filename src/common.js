@@ -1,6 +1,6 @@
 //@ts-check
 const { MacroError } = require("babel-plugin-macros");
-const fs = require("fs");
+const fs = require("fs-extra");
 const path = require("path");
 
 const postCSS = require("postcss");

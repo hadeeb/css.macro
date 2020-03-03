@@ -10,11 +10,11 @@ const { fixtures } = create({
       {
         [pkgName]: {
           emitCSS: false,
-          useRuntime: false
+          useRuntime: true
         }
       }
     ]
   ]
 });
 
-fixtures("css.macro", path.join(__dirname, "__fixtures__"));
+fixtures("css.macro", path.join(__dirname, "__fixtures__runtime"));
